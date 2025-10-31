@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>多弹窗顺序显示示例</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f5f5f5;
+        }
+        
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+        
+        .modal-content {
+            background-color: white;
+            border-radius: 8px;
+            width: 400px;
+            max-width: 90%;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            animation: modalFadeIn 0.3s;
+        }
+        
+        @keyframes modalFadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .modal-header {
+            padding: 16px 20px;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .modal-title {
+            margin: 0;
+            font-size: 18px;
+            font-weight: bold;
+        }
+        
+        .modal-body {
+            padding: 20px;
+            line-height: 1.5;
+        }
+        
+        .modal-footer {
+            padding: 16px 20px;
+            border-top: 1px solid #eee;
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+        }
+        
+        .modal-btn {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        
+        .confirm-btn {
+            background-color: #4CAF50;
+            color: white;
+        }
+        
+        .cancel-btn {
+            background-color: #f1f1f1;
+            color: #333;
+        }
+        
+        .share-btn {
+            background-color: #2196F3;
+            color: white;
+        }
+        
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #333;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 4px;
+            opacity: 0;
+            transition: opacity 0.3s;
+            z-index: 1001;
+        }
+        
+        .toast.show {
+            opacity: 1;
+        }
+        
+        .modal-indicator {
+            text-align: center;
+            padding: 10px;
+            font-size: 14px;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <!-- 弹窗容器 -->
+    <div class="modal-overlay" id="modalOverlay">
+        <div class="modal-content" id="modalContent">
+            <!-- 弹窗内容将通过JavaScript动态生成 -->
+        </div>
+    </div>
+    
+    <!-- 复制成功提示 -->
+    <div class="toast" id="toast">复制成功！</div>
+
+    <script>
+        // 从JSON文件加载弹窗配置
+        fetch('公告.json')
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('网络响应不正常');
+                }
+                return response.json();
+            })
+            .then(configs => {
+                // 如果配置为空或无效，不做任何处理
+                if (!configs || configs.length === 0) {
+                    console.log('没有弹窗配置');
+                    return;
+                }
+                
+                // 弹窗队列
+                let modalQueue = [...configs];
+                let currentModalIndex = 0;
+                let backdropClickHandler = null;
+                
+                // 显示下一个弹窗
+                function showNextModal() {
+                    // 移除之前的事件监听器
+                    if (backdropClickHandler) {
+                        document.getElementById('modalOverlay').removeEventListener('click', backdropClickHandler);
+                        backdropClickHandler = null;
+                    }
+                    
+                    if (modalQueue.length === 0) {
+                        // 所有弹窗已显示完毕
+                        closeModal();
+                        return;
+                    }
+                    
+                    // 获取当前弹窗配置
+                    const config = modalQueue[0];
+                    
+                    // 创建弹窗内容
+                    let content = '';
+                    
+                    // 标题
+                    if (config.标题) {
+                        content += `
+                            <div class="modal-header">
+                                <h3 class="modal-title">${config.标题}</h3>
+                            </div>
+                        `;
+                    }
+                    
+                    // 内容
+                    if (config.内容) {
+                        content += `<div class="modal-body">${config.内容}</div>`;
+                    }
+                    
+                    // 按钮区域
+                    let buttons = '';
+                    if (config.显示取消按钮) {
+                        buttons += `<button class="modal-btn cancel-btn" id="cancelBtn">取消</button>`;
+                    }
+                    if (config.显示分享按钮) {
+                        buttons += `<button class="modal-btn share-btn" id="shareBtn">分享</button>`;
+                    }
+                    if (config.显示确定按钮) {
+                        buttons += `<button class="modal-btn confirm-btn" id="confirmBtn">确定</button>`;
+                    }
+                    
+                    if (buttons) {
+                        content += `<div class="modal-footer">${buttons}</div>`;
+                    }
+                    
+                    // 添加弹窗指示器
+                    content += `<div class="modal-indicator">${currentModalIndex + 1}/${configs.length}</div>`;
+                    
+                    // 设置弹窗内容
+                    document.getElementById('modalContent').innerHTML = content;
+                    
+                    // 显示弹窗
+                    document.getElementById('modalOverlay').style.display = 'flex';
+                    
+                    // 添加事件监听器
+                    if (config.显示确定按钮) {
+                        document.getElementById('confirmBtn').addEventListener('click', function() {
+                            // 从队列中移除当前弹窗
+                            modalQueue.shift();
+                            currentModalIndex++;
+                            // 显示下一个弹窗
+                            showNextModal();
+                        });
+                    }
+                    
+                    if (config.显示取消按钮) {
+                        document.getElementById('cancelBtn').addEventListener('click', function() {
+                            // 从队列中移除当前弹窗
+                            modalQueue.shift();
+                            currentModalIndex++;
+                            // 显示下一个弹窗
+                            showNextModal();
+                        });
+                    }
+                    
+                    if (config.显示分享按钮) {
+                        document.getElementById('shareBtn').addEventListener('click', function() {
+                            // 复制分享内容到剪贴板
+                            navigator.clipboard.writeText(config.分享内容 || config.内容 || '')
+                                .then(() => {
+                                    // 显示复制成功提示
+                                    const toast = document.getElementById('toast');
+                                    toast.classList.add('show');
+                                    setTimeout(() => {
+                                        toast.classList.remove('show');
+                                    }, 2000);
+                                })
+                                .catch(err => {
+                                    console.error('复制失败:', err);
+                                });
+                        });
+                    }
+                    
+                    // 空白处点击关闭 - 修复后的逻辑
+                    if (config.允许点击空白处关闭) {
+                        backdropClickHandler = function(e) {
+                            if (e.target === this) {
+                                // 从队列中移除当前弹窗
+                                modalQueue.shift();
+                                currentModalIndex++;
+                                // 显示下一个弹窗
+                                showNextModal();
+                            }
+                        };
+                        document.getElementById('modalOverlay').addEventListener('click', backdropClickHandler);
+                    }
+                }
+                
+                // 开始显示弹窗
+                showNextModal();
+            })
+            .catch(error => {
+                console.error('加载弹窗配置时出错:', error);
+            });
+        
+        // 关闭弹窗函数
+        function closeModal() {
+            document.getElementById('modalOverlay').style.display = 'none';
+        }
+    </script>
+</body>
+</html>
