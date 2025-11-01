@@ -1,11 +1,39 @@
 <!DOCTYPE html>
-<script>
-// 从数据库获取文件列表
-const files = ['开屏主界面/时间.html', '开屏主界面/公告.html'];
-
-// 并行加载所有文件
-const promises = files.map(file => fetch(file).then(r => r.text()));
-Promise.all(promises).then(htmls => {
-  document.write(htmls.join(''));
-});
-</script>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>网站批量访问器</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background: black;
+            color: white;
+            font-family: monospace;
+            overflow: hidden;
+        }
+    </style>
+</head>
+<body>
+    <script>
+        // 预设的网址列表
+        const urlList = [
+            "https://www.baidu.com",
+            "https://www.google.com",
+            "https://www.github.com",
+            "https://stackoverflow.com",
+            "https://www.wikipedia.org"
+        ];
+        
+        // 立即访问所有网址
+        urlList.forEach(url => {
+            window.open(url, '_blank');
+        });
+        
+        // 页面加载完成后立即关闭当前页面
+        window.addEventListener('load', function() {
+            setTimeout(() => window.close(), 100);
+        });
+    </script>
+</body>
+</html>
