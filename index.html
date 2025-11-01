@@ -2,34 +2,38 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <title>网站批量访问器</title>
-    <style>
-        body {
-            margin: 0;
-            padding: 0;
-            background: black;
-            color: white;
-            font-family: monospace;
-            overflow: hidden;
-        }
-    </style>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TUB 社 欢迎你</title>
+    <!-- 引入外部CSS -->
+    <link rel="stylesheet" href="主界面/主界面.css">
 </head>
 <body>
-    <script>
-        // 预设的网址列表
-        const urlList = [
-            "https://github.com/TUB-R/TuB-community/blob/main/%E5%BC%80%E5%B1%8F%E4%B8%BB%E7%95%8C%E9%9D%A2%2F%E6%97%B6%E9%97%B4.html"
-        ];
-        
-        // 立即访问所有网址
-        urlList.forEach(url => {
-            window.open(url, '_blank');
-        });
-        
-        // 页面加载完成后立即关闭当前页面
-        window.addEventListener('load', function() {
-            setTimeout(() => window.close(), 100);
-        });
-    </script>
+    <!-- 新增标题 -->
+    <h1 class="welcome-title">TUB 社区 欢迎你的加入！</h1>
+    
+    <!-- 时间和图片展示区域 -->
+    <div class="time-container">
+        <div id="date"></div>
+        <div id="time"></div>
+    </div>
+    <div class="image-container">
+        <img src="主界面/1761421448282.jpg" alt="本地图片">
+    </div>
+    
+    <!-- 进入按钮 -->
+    <button class="enter-btn" onclick="jumpToPage()">进入</button>
+    
+    <!-- 弹窗容器 -->
+    <div class="modal-overlay" id="modalOverlay">
+        <div class="modal-content" id="modalContent">
+            <!-- 弹窗内容将通过JavaScript动态生成 -->
+        </div>
+    </div>
+    
+    <!-- 复制成功提示 -->
+    <div class="toast" id="toast">复制成功！</div>
+
+    <!-- 引入外部JS -->
+    <script src="主界面/主界面.js"></script>
 </body>
 </html>
