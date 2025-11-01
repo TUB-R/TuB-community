@@ -1,0 +1,178 @@
+body {
+    font-family: Arial, sans-serif;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    background-color: #f5f5f5;
+    padding-top: 20px;
+    
+    /* 仅调整背景图透明度（通过渐变叠加实现，不影响内容） */
+    background: linear-gradient(rgba(255,255,255,0.6), rgba(255,255,255,0.9)), 
+                url("176.jpg"); /* 0.6为透明度，0-1调整 */
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+}
+
+
+
+
+/* 新增欢迎标题样式 */
+.welcome-title {
+    font-size: 32px;
+    color: #333;
+    margin-bottom: 30px;
+    text-align: center;
+    letter-spacing: 2px;
+}
+
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modal-content {
+    background-color: white;
+    border-radius: 8px;
+    width: 400px;
+    max-width: 90%;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    animation: modalFadeIn 0.3s;
+}
+
+@keyframes modalFadeIn {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.modal-header {
+    padding: 16px 20px;
+    border-bottom: 1px solid #eee;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.modal-title {
+    margin: 0;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.modal-body {
+    padding: 20px;
+    line-height: 1.5;
+}
+
+.modal-footer {
+    padding: 16px 20px;
+    border-top: 1px solid #eee;
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+}
+
+.modal-btn {
+    padding: 8px 16px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.confirm-btn {
+    background-color: #4CAF50;
+    color: white;
+}
+
+.cancel-btn {
+    background-color: #f1f1f1;
+    color: #333;
+}
+
+.share-btn {
+    background-color: #2196F3;
+    color: white;
+}
+
+.toast {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #333;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 4px;
+    opacity: 0;
+    transition: opacity 0.3s;
+    z-index: 1001;
+}
+
+.toast.show {
+    opacity: 1;
+}
+
+.modal-indicator {
+    text-align: center;
+    padding: 10px;
+    font-size: 14px;
+    color: #666;
+}
+
+/* 日期时间样式（新增字体粗细属性） */
+.time-container {
+    text-align: center;
+    margin-bottom: 40px; /* 增加底部间距 */
+}
+
+#date {
+    font-size: 28px;
+    font-weight: 700; /* 日期加粗，700=bold，可调整100-900 */
+}
+
+#time {
+    font-size: 20px;
+    font-weight: 500; /* 时间中等粗细，可按需调整 */
+}
+
+
+.image-container {
+    margin-top: 0px; /* 增加顶部间距 */
+    margin-bottom: 40px; /* 增加底部间距 */
+    text-align: center;
+}
+
+.image-container img {
+    max-width: 50%;
+}
+
+/* 进入按钮样式 */
+.enter-btn {
+    margin-top: 100px;
+    padding: 12px 40px;
+    background-color: #FF7A00;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.enter-btn:hover {
+    background-color: #FF9500;
+}
