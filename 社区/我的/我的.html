@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>底部导航栏</title>
+    <link rel="stylesheet" href="../导航栏/导航栏.css">
+    <link rel="stylesheet" href="我的.css"> <!-- 新增登录界面样式 -->
+</head>
+<body>
+    
+    <!-- ✅ 中间内容区域：登录界面 -->
+    <div class="content">
+        <div class="login-container">
+            <h2>用户登录</h2>
+            <input type="text" id="username" placeholder="请输入用户名">
+            <input type="password" id="password" placeholder="请输入密码">
+            <button id="loginBtn">登录</button>
+            <div class="links">
+                <a href="#">忘记密码？</a> | <a href="#">注册账号</a>
+            </div>
+        </div>
+    </div>
+    
+    <!-- ✅ 原有导航栏，未修改任何内容 -->
+    <nav class="bottom-nav">
+        <div class="nav-item">
+            <a href="../导航栏/index.html" class="nav-link">
+                <img src="../../资源/1.jpg" alt="主页">
+                <span>主页</span>
+            </a>
+        </div>
+        <div class="nav-item">
+            <a href="community.html" class="nav-link">
+                <img src="../../资源/2.jpg" alt="社区">
+                <span>社区</span>
+            </a>
+        </div>
+        <div class="nav-item">
+            <a href="messages.html" class="nav-link">
+                <img src="../../资源/3.jpg" alt="消息">
+                <span>消息</span>
+            </a>
+        </div>
+        <div class="nav-item">
+            <a href="profile.html" class="nav-link active">
+                <img src="../../资源/4.jpg" alt="我的">
+                <span>我的</span>
+            </a>
+        </div>
+    </nav>
+
+    <script src="../导航栏/导航栏.js"></script>
+    <script src="我的.js"></script> <!-- 新增登录逻辑 -->
+</body>
+</html>
