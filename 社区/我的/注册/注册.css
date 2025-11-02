@@ -1,0 +1,83 @@
+body {
+    margin: 0;
+    padding: 0;
+    font-family: system-ui, -apple-system, sans-serif;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    background-color: #d0def8; /* ✅ 纯色背景 */
+}
+
+.content {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.login-container {
+    width: 340px;
+    position: relative;
+    padding: 50px 35px 35px; /* 上方留位置放 logo */
+    border-radius: 16px;
+    background: rgba(255, 255, 255, 0.95);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    backdrop-filter: blur(15px);
+    text-align: center;
+}
+
+/* ✅ 顶部Logo */
+.top-logo {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    border-radius: 50%; /* 如果是头像可以保留圆形 */
+    position: absolute;
+    top: -125px;  /* 图片悬浮于卡片上 */
+    left: 50%;
+    transform: translateX(-50%);
+    box-shadow: 0 4px 15px rgb(0,0,0);
+}
+
+/* ✅ 登录框背景图依然可见 */
+.login-container img.bg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: 16px;
+    object-fit: cover;
+    z-index: -1;
+    opacity: 0.15; /* ✅ 轻微显示 */
+}
+
+.login-container h2 {
+    margin-top: 10px;
+    margin-bottom: 25px;
+    color: #1a1a1a;
+    font-weight: 600;
+    font-size: 24px;
+}
+
+.login-container input {
+    width: 100%;
+    padding: 12px;
+    margin: 8px 0;
+    border: 1px solid #e1e5e9;
+    border-radius: 6px;
+    font-size: 14px;
+    background: #fff;
+}
+
+.login-container button {
+    width: 100%;
+    padding: 12px;
+    margin-top: 20px;
+    background: #3b82f6;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 15px;
+    font-weight: 500;
+    cursor: pointer;
+}
