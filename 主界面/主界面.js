@@ -17,7 +17,7 @@ function updateTime() {
 
 // 页面跳转功能
 function jumpToPage() {
-    window.location.href = '社区/主页/主页.html'; // 替换为实际目标页面路径
+    window.location.href = './社区/导航栏/index.html'; // 替换为实际目标页面路径
 }
 
 // 弹窗相关功能
